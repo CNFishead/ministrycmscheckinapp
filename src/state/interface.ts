@@ -17,7 +17,7 @@ type InterfaceState = {
 };
 
 export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => ({
-  currentSignUpStep: 0,
+  currentSignUpStep: 1,
   signUpErrorDetected: false,
   currentForm: undefined,
   isGoingToPreviousStep: false,

@@ -3,7 +3,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
   &__input {
     // border: 1px solid var(--color-primary500);
@@ -54,7 +54,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: var(--color-primary500);
+    // background-color: var(--color-primary500);
     border: none;
     border-radius: 5px;
     color: white;
@@ -66,7 +66,7 @@
       transition: all 0.3s ease-in-out;
       width: 100%;
       cursor: pointer;
-      background-color: var(--color-primary600);
+      // background-color: var(--color-primary600);
     }
   }
   &__clearInput {
