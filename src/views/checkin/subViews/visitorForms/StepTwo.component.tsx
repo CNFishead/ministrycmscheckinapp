@@ -7,18 +7,33 @@ import { countries } from "@/data/countries";
 import MemberType from "@/types/MemberType";
 import { address } from "framer-motion/client";
 import UserItem from "@/components/userItem/UserItem.component";
+import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
+import { useParams } from "next/navigation";
+import useApiHook from "@/state/useApi";
+import { useInterfaceStore } from "@/state/interface";
 
 const StepTwo = () => {
   const [form] = Form.useForm();
-  const [visitorData, setVisitorData] = React.useState<MemberType[]>([]);
+  // get the ministry id from the url
+  const { ministryslug } = useParams();
+  const { data } = useApiHook({
+    key: "ministry",
+    url: `/ministry/${ministryslug}`,
+    method: "GET",
+    enabled: !!ministryslug,
+  });
+
+  const { visitors, setVisitors } = useInterfaceStore((state) => state);
 
   const addVisitorHandler = (values: MemberType) => {
-    setVisitorData((prev) => [...prev, values]);
+    // add the visitor to the visitors array
+    setVisitors([...visitors, values]);
     form.resetFields();
   };
 
   const handleVisitorRemoval = (index: number) => {
-    setVisitorData((prev) => prev.filter((_, i) => i !== index));
+    // setVisitors((prev) => prev.filter((_, i) => i !== index));
+    setVisitors(visitors.filter((_, i) => i !== index));
   };
 
   return (
@@ -38,7 +53,7 @@ const StepTwo = () => {
               location: {
                 address: "1234 Main St",
                 city: "Nashville",
-                zip: "37211",
+                zipCode: "37211",
                 country: "United States",
                 state: "Tennessee",
               },
@@ -46,6 +61,30 @@ const StepTwo = () => {
               checkInLocation: "inPerson",
             }}
           >
+            <div className={styles.imageUploadContainer}>
+              <div className={styles.imageContainer}>
+                <PhotoUpload
+                  name="profileImageUrl"
+                  listType="picture-card"
+                  tooltip="Upload a photo of yourself! this is completely optional but it helps church staff identify you in our system!"
+                  isAvatar={true}
+                  aspectRatio={1 / 1}
+                  form={form}
+                  action={`${process.env.API_URL}/upload`}
+                  default={form.getFieldValue("profileImageUrl")}
+                  placeholder="Upload a photo of yourself!"
+                  bodyData={{
+                    ministryName: data?.ministry.name,
+                  }}
+                />
+              </div>
+              <div className={formStyles.form__inputGroup}>
+                <Form.Item name="profileImageUrl" label="">
+                  <Input type="text" placeholder="Member Image http address" className={styles.input} />
+                </Form.Item>
+              </div>
+            </div>
+
             <div className={formStyles.form__formGroup}>
               <div className={formStyles.form__inputGroup}>
                 <Form.Item
@@ -225,7 +264,7 @@ const StepTwo = () => {
         </div>
         <div className={styles.rightContainer}>
           <h2>Visitors</h2>
-          {visitorData.map((visitor, index) => (
+          {visitors.map((visitor, index) => (
             <UserItem user={visitor} key={index} sm onClick={() => handleVisitorRemoval(index)} />
           ))}
         </div>

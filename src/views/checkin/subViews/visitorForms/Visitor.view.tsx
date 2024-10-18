@@ -4,16 +4,27 @@ import { SignUpStep } from "@/types/signUpSteps";
 import { useInterfaceStore } from "@/state/interface";
 import MainWrapper from "@/layouts/mainWrapper/MainWrapper.layout";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button, Steps } from "antd";
+import { Button, message, Steps } from "antd";
 import StepOne from "./StepOne.component";
 import StepTwo from "./StepTwo.component";
+import { useParams } from "next/navigation";
+import useApiHook from "@/state/useApi";
 
 const Visitor = () => {
+  // get the ministry id from the url
+  const { ministryslug } = useParams();
+  const { data } = useApiHook({
+    key: "ministry",
+    url: `/ministry/${ministryslug}`,
+    method: "GET",
+    enabled: !!ministryslug,
+  });
   const {
     currentSignUpStep,
     goBackToPreviousSignUpStep,
     isGoingToPreviousStep,
     advanceToNextSignUpStep,
+    visitors,
     setCurrentSignUpStep,
   } = useInterfaceStore((state) => state);
   const steps: {
@@ -34,9 +45,65 @@ const Visitor = () => {
       headerText: "New Visitor",
       subHeaderText: "Please fill out the form below to check in.",
       component: <StepTwo />,
-      nextButtonText: "Next",
-      nextButtonAction: setCurrentSignUpStep.bind(null, 3),
+      nextButtonText: "Check In!",
+      nextButtonAction: () => {
+        // check that the visitors array is not empty, if it is, we dont want to advance to the next step
+        if (visitors.length === 0) {
+          message.info("Please add at least one visitor before checking in.");
+          return;
+        }
+        // next check if the ministry has a field for donations, if it does, we want to advance to step 2, otherwise, we want to advance to step 3
+        if (data?.ministry.donationLink) {
+          setCurrentSignUpStep(2);
+        } else {
+          setCurrentSignUpStep(3);
+        }
+      },
       previousButtonAction: setCurrentSignUpStep.bind(null, 0),
+    },
+    2: {
+      id: 2,
+      title: "",
+      headerText: "",
+      subHeaderText: "",
+      component: <StepTwo />,
+      nextButtonText: "",
+      nextButtonAction: () => {},
+      previousButtonAction: setCurrentSignUpStep.bind(null, 1),
+    },
+    3: {
+      id: 3,
+      title: "We're excited to have you visit us today! and appreciate you taking the time to fill out this form.",
+      headerText: "Check In",
+      subHeaderText: "Please confirm the information below and click the check in button.",
+      component: <StepTwo />,
+      nextButtonText: "Check In!",
+      nextButtonAction: () => {
+        // check that the visitors array is not empty, if it is, we dont want to advance to the next step
+        if (visitors.length === 0) {
+          message.info("Please add at least one visitor before checking in.");
+          return;
+        }
+        advanceToNextSignUpStep();
+      },
+      previousButtonAction: setCurrentSignUpStep.bind(null, 1),
+    },
+    4: {
+      id: 4,
+      title: "We're excited to have you visit us today! and appreciate you taking the time to fill out this form.",
+      headerText: "Check In",
+      subHeaderText: "Please confirm the information below and click the check in button.",
+      component: <StepTwo />,
+      nextButtonText: "Check In!",
+      nextButtonAction: () => {
+        // check that the visitors array is not empty, if it is, we dont want to advance to the next step
+        if (visitors.length === 0) {
+          message.info("Please add at least one visitor before checking in.");
+          return;
+        }
+        advanceToNextSignUpStep();
+      },
+      previousButtonAction: setCurrentSignUpStep.bind(null, 1),
     },
   };
 
