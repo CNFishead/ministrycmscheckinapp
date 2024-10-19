@@ -47,6 +47,7 @@ const StepTwo = () => {
             initialValues={{
               firstName: "John",
               lastName: "Doe",
+              email: "test@test.com",
               tags: ["gamer", "developer", "musician"],
               sex: "male",
               maritalStatus: "single",

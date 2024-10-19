@@ -16,6 +16,9 @@ export default interface MemberType {
   email: string;
   phoneNumber: string;
   role: string;
+  tags: string[];
+  maritalStatus: string;
+  checkInLocation: string;
   location: {
     address: string;
     city: string;

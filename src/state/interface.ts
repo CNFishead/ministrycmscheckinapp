@@ -20,11 +20,44 @@ type InterfaceState = {
 };
 
 export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => ({
-  currentSignUpStep: 1,
+  currentSignUpStep: 4,
   signUpErrorDetected: false,
   currentForm: undefined,
   isGoingToPreviousStep: false,
-  visitors: [],
+  visitors: [
+    {
+      firstName: "John",
+      lastName: "Doe",
+      tags: ["gamer", "developer", "musician"],
+      sex: "male",
+      maritalStatus: "single",
+      location: {
+        address: "1234 Main St",
+        city: "Nashville",
+        zipCode: "37211",
+        country: "United States",
+        state: "Tennessee",
+      },
+      role: "member",
+      checkInLocation: "inPerson",
+    },
+    {
+      firstName: "John",
+      lastName: "Doe",
+      tags: ["gamer", "developer", "musician"],
+      sex: "male",
+      maritalStatus: "single",
+      location: {
+        address: "1234 Main St",
+        city: "Nashville",
+        zipCode: "37211",
+        country: "United States",
+        state: "Tennessee",
+      },
+      role: "member",
+      checkInLocation: "inPerson",
+    },
+  ] as unknown as MemberType[],
 
   setVisitors: (visitors: MemberType[]) => {
     set({ visitors });

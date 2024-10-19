@@ -9,6 +9,9 @@ import StepOne from "./StepOne.component";
 import StepTwo from "./StepTwo.component";
 import { useParams } from "next/navigation";
 import useApiHook from "@/state/useApi";
+import StepThree from "./StepThree.component";
+import StepFour from "./StepFour.component";
+import StepFinal from "./StepFinal.component";
 
 const Visitor = () => {
   // get the ministry id from the url
@@ -36,6 +39,8 @@ const Visitor = () => {
       headerText: "We're excited to have you visit us today!",
       subHeaderText: "Are you a returning visitor or a new visitor? Please select the option that best describes you.",
       component: <StepOne />,
+      buttonStyling: styles.button,
+      nextButtonStyling: styles.success,
       hideBackButton: true,
       hideNextButton: true,
     },
@@ -45,6 +50,8 @@ const Visitor = () => {
       headerText: "New Visitor",
       subHeaderText: "Please fill out the form below to check in.",
       component: <StepTwo />,
+      buttonStyling: styles.button,
+      nextButtonStyling: styles.success,
       nextButtonText: "Check In!",
       nextButtonAction: () => {
         // check that the visitors array is not empty, if it is, we dont want to advance to the next step
@@ -63,21 +70,24 @@ const Visitor = () => {
     },
     2: {
       id: 2,
-      title: "",
-      headerText: "",
-      subHeaderText: "",
-      component: <StepTwo />,
-      nextButtonText: "",
-      nextButtonAction: () => {},
-      previousButtonAction: setCurrentSignUpStep.bind(null, 1),
+      title: "Step three",
+      headerText: "We appreciate you taking the time to fill out this form.",
+      subHeaderText: "Would you like to give your donation to the church today online?",
+      component: <StepThree />,
+      buttonStyling: styles.button,
+      nextButtonStyling: styles.success,
+      hideBackButton: true,
+      hideNextButton: true,
     },
     3: {
       id: 3,
-      title: "We're excited to have you visit us today! and appreciate you taking the time to fill out this form.",
-      headerText: "Check In",
-      subHeaderText: "Please confirm the information below and click the check in button.",
-      component: <StepTwo />,
-      nextButtonText: "Check In!",
+      title: "Donation",
+      headerText: "Thanks for you donation!",
+      subHeaderText: "When you are finished hit the end check-in button!",
+      component: <StepFour />,
+      nextButtonText: "End Check-In!",
+      buttonStyling: styles.button,
+      nextButtonStyling: styles.success,
       nextButtonAction: () => {
         // check that the visitors array is not empty, if it is, we dont want to advance to the next step
         if (visitors.length === 0) {
@@ -86,24 +96,25 @@ const Visitor = () => {
         }
         advanceToNextSignUpStep();
       },
-      previousButtonAction: setCurrentSignUpStep.bind(null, 1),
+      previousButtonAction: setCurrentSignUpStep.bind(null, 2),
     },
     4: {
       id: 4,
-      title: "We're excited to have you visit us today! and appreciate you taking the time to fill out this form.",
-      headerText: "Check In",
-      subHeaderText: "Please confirm the information below and click the check in button.",
-      component: <StepTwo />,
-      nextButtonText: "Check In!",
+      title: "Finish",
+      // headerText: "Check-in complete!",
+      // subHeaderText: "We're happy you joined us today! and hope to see you again soon. Enjoy the service!",
+      component: <StepFinal />,
+      nextButtonText: "Finish and close",
+      backButtonText: !data?.ministry.donationLink ? "Back to Donation Giving" : "Visitor Sign-In",
+      buttonStyling: styles.button,
+      nextButtonStyling: styles.success,
+      hideNextButton: true,
       nextButtonAction: () => {
-        // check that the visitors array is not empty, if it is, we dont want to advance to the next step
-        if (visitors.length === 0) {
-          message.info("Please add at least one visitor before checking in.");
-          return;
-        }
-        advanceToNextSignUpStep();
+        window.close();
       },
-      previousButtonAction: setCurrentSignUpStep.bind(null, 1),
+      previousButtonAction: !data?.ministry.donationLink
+        ? setCurrentSignUpStep.bind(null, 3)
+        : setCurrentSignUpStep.bind(null, 1),
     },
   };
 
@@ -133,8 +144,8 @@ const Visitor = () => {
           key={currentSignUpStep}
         >
           <MainWrapper
-            title={steps[currentSignUpStep]?.headerText}
-            description={steps[currentSignUpStep]?.subHeaderText}
+            title={steps[currentSignUpStep]?.headerText ?? ""}
+            description={steps[currentSignUpStep]?.subHeaderText ?? ""}
           >
             {steps[currentSignUpStep]?.component}
           </MainWrapper>
@@ -143,10 +154,11 @@ const Visitor = () => {
             {!steps[currentSignUpStep]?.hideBackButton && (
               <Button
                 type="text"
-                className={styles.backButton}
                 onClick={steps[currentSignUpStep]?.previousButtonAction || goBackToPreviousSignUpStep}
+                disabled={steps[currentSignUpStep]?.backButtonDisabled}
+                className={`${steps[currentSignUpStep]?.buttonStyling} ${steps[currentSignUpStep]?.backButtonStyling}`}
               >
-                Back
+                {steps[currentSignUpStep]?.backButtonText || "Back"}
               </Button>
             )}
             {!steps[currentSignUpStep]?.hideNextButton && (
@@ -156,7 +168,7 @@ const Visitor = () => {
                   steps[currentSignUpStep]?.nextButtonAction!();
                 }}
                 disabled={steps[currentSignUpStep]?.nextButtonDisabled}
-                className={styles.nextButton}
+                className={`${steps[currentSignUpStep]?.buttonStyling} ${steps[currentSignUpStep]?.nextButtonStyling}`}
               >
                 {steps[currentSignUpStep]?.nextButtonText || "Next"}
               </Button>

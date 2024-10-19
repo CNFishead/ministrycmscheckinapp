@@ -17,28 +17,15 @@
   display: flex;
   justify-content: space-evenly;
   margin-top: 20px;
-
-  .button {
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid #f5f5f5;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      background-color: #000;
-      color: #fff;
-    }
-  }
+  gap: 20px;
 }
 
 .buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 2% 0;
+  width: 100%;
 
   @include mobile {
     flex-direction: column-reverse;
@@ -48,7 +35,21 @@
 
   gap: 20px;
 }
+.button {
+  height: 40px;
+  border-radius: 5px;
+  padding: 2%;
+  border: 1px solid #f5f5f5;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 
+  &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+}
 .leftContainer {
   display: flex;
   flex-direction: column;
@@ -60,4 +61,32 @@
   flex-direction: column;
   align-items: flex-start;
   flex: 0.35;
+}
+
+.success {
+  color: white;
+  // bootstrap success color
+  background-color: #28a745;
+  font-size: 16px;
+  font-weight: 500;
+
+  &:hover {
+    color: white !important;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+  }
+}
+
+.danger {
+  color: #dc3545;
+  // bootstrap danger color
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: white !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+  }
 }
