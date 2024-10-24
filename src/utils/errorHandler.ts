@@ -11,10 +11,6 @@ import { message } from "antd";
  */
 export default (error: any) => {
   const messageTxt = error.response && error.response.data.message ? error.response.data.message : error.message;
-  if (messageTxt === "Not authorized, token failed") {
-  }
-  console.log("ERROR");
-
   message.error(messageTxt);
   return message;
 };

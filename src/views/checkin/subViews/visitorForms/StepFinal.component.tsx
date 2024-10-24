@@ -10,14 +10,18 @@ const StepFinal = () => {
       <div className={styles.container} style={{ margin: "2% 0" }}>
         {/* you may close this window prompt */}
         <h2>Thank you for visiting!</h2>
-        <p>You may now close this window.</p>
+        <p>
+          You may now <span style={{ color: "red", fontStyle: "italic", fontWeight: "bold" }}>close</span> this window.
+        </p>
       </div>
+      <div className={styles.container}>
       <p>Visitors checked in: </p>
-      {visitors.map((visitor, index) => (
-        <div key={index}>
-          <UserItem user={visitor} />
-        </div>
-      ))}
+        {visitors.map((visitor, index) => (
+          <div key={index} style={{width: '100%'}}>
+            <UserItem user={visitor} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

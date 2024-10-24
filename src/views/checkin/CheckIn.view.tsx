@@ -1,12 +1,17 @@
 "use client";
 import React from "react";
 import styles from "./CheckIn.module.scss";
-import { Button } from "antd";
+import { Button, Drawer, FloatButton } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
 import Visitor from "./subViews/visitorForms/Visitor.view";
+import { FaUsers } from "react-icons/fa";
+import { useInterfaceStore } from "@/state/interface";
+import UserItem from "@/components/userItem/UserItem.component";
 
 const CheckIn = () => {
   const [selectedView, setSelectedView] = React.useState("visitor");
+  const [showDrawer, setShowDrawer] = React.useState(false);
+  const { visitors, setVisitors, currentSignUpStep } = useInterfaceStore((state) => state);
 
   // setup the viewHandler to handle the view change
   const getView = () => {
@@ -32,6 +37,29 @@ const CheckIn = () => {
 
   return (
     <div className={styles.container}>
+      {currentSignUpStep !== 4 && (
+        <FloatButton onClick={() => setShowDrawer(true)} icon={<FaUsers />} badge={{ count: visitors.length }} />
+      )}
+
+      <Drawer open={showDrawer} onClose={() => setShowDrawer(false)} width={"50%"}>
+        <div className={styles.visitorDrawer__container}>
+          <h2>Visitors</h2>
+          <p>click to remove...</p>
+          {visitors.map((visitor, index) => (
+            <UserItem
+              user={visitor}
+              key={index}
+              sm={
+                // if device is mobile, return true
+                window.innerWidth < 768
+              }
+              onClick={() => {
+                setVisitors(visitors.filter((_, i) => i !== index));
+              }}
+            />
+          ))}
+        </div>
+      </Drawer>
       <AnimatePresence initial={true} mode="wait">
         <motion.div
           className={styles.auth}

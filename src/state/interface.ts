@@ -20,44 +20,49 @@ type InterfaceState = {
 };
 
 export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => ({
-  currentSignUpStep: 4,
+  currentSignUpStep: 1,
   signUpErrorDetected: false,
   currentForm: undefined,
   isGoingToPreviousStep: false,
   visitors: [
-    {
-      firstName: "John",
-      lastName: "Doe",
-      tags: ["gamer", "developer", "musician"],
-      sex: "male",
-      maritalStatus: "single",
-      location: {
-        address: "1234 Main St",
-        city: "Nashville",
-        zipCode: "37211",
-        country: "United States",
-        state: "Tennessee",
-      },
-      role: "member",
-      checkInLocation: "inPerson",
-    },
-    {
-      firstName: "John",
-      lastName: "Doe",
-      tags: ["gamer", "developer", "musician"],
-      sex: "male",
-      maritalStatus: "single",
-      location: {
-        address: "1234 Main St",
-        city: "Nashville",
-        zipCode: "37211",
-        country: "United States",
-        state: "Tennessee",
-      },
-      role: "member",
-      checkInLocation: "inPerson",
-    },
-  ] as unknown as MemberType[],
+    // {
+    //   familyName: "Doe",
+    //   firstName: "John",
+    //   lastName: "Doe",
+    //   profileImageUrl: "https://thumbs.dreamstime.com/b/handsome-man-smiling-29530620.jpg",
+    //   tags: ["gamer", "developer", "musician"],
+    //   sex: "male",
+    //   maritalStatus: "married",
+    //   location: {
+    //     address: "1234 Main St",
+    //     city: "Nashville",
+    //     zipCode: "37211",
+    //     country: "United States",
+    //     state: "Tennessee",
+    //   },
+    //   role: "member",
+    //   checkInLocation: "inPerson",
+    // },
+    // {
+    //   familyName: "Doe",
+    //   firstName: "Jane",
+    //   lastName: "Doe",
+    //   profileImageUrl:
+    //     "https://c8.alamy.com/comp/2HDMFC1/woman-30-45-years-female-ladies-lady-women-40s-baby-boomers-middle-age-middle-aged-middle-age-middle-aged-2HDMFC1.jpg",
+    //   tags: ["gamer", "developer", "musician"],
+    //   sex: "male",
+    //   maritalStatus: "married",
+    //   location: {
+    //     address: "1234 Main St",
+    //     city: "Nashville",
+    //     zipCode: "37211",
+    //     country: "United States",
+    //     state: "Tennessee",
+    //   },
+    //   role: "member",
+    //   checkInLocation: "inPerson",
+    // },
+  ] as MemberType[],
 
   setVisitors: (visitors: MemberType[]) => {
     set({ visitors });

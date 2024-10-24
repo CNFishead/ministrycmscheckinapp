@@ -14,7 +14,11 @@ const UserItem = (props: Props) => {
     <div className={styles.container} onClick={props?.onClick}>
       <div className={styles.userInfo}>
         <div className={styles.userImageContainer}>
-          <Avatar src={props.user?.profileImageUrl} alt="user-profile-image" size={props.sm ? 48 : 64} />
+          <Avatar
+            src={props.user?.profileImageUrl ?? "/images/no-photo.png"}
+            alt="user-profile-image"
+            size={props.sm ? 48 : 64}
+          />
         </div>
         <div className={styles.userDetailsContainer}>
           <div className={styles.header}>
@@ -28,9 +32,11 @@ const UserItem = (props: Props) => {
         {!props.sm && (
           <div className={styles.miscInfoContainer}>
             <div className={styles.miscInfo}>
-              <p>
-                <strong>Email Address:</strong> {props.user?.email}
-              </p>
+              {props.user?.email && (
+                <p>
+                  <strong>Email Address:</strong> {props.user?.email}
+                </p>
+              )}
               {props.user?.phoneNumber && (
                 <p>
                   <strong>Phone: </strong>

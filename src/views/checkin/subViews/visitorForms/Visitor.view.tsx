@@ -4,7 +4,7 @@ import { SignUpStep } from "@/types/signUpSteps";
 import { useInterfaceStore } from "@/state/interface";
 import MainWrapper from "@/layouts/mainWrapper/MainWrapper.layout";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button, message, Steps } from "antd";
+import { Button, FloatButton, message, Steps } from "antd";
 import StepOne from "./StepOne.component";
 import StepTwo from "./StepTwo.component";
 import { useParams } from "next/navigation";
@@ -22,6 +22,14 @@ const Visitor = () => {
     method: "GET",
     enabled: !!ministryslug,
   });
+
+  const { mutate: checkInVisitor } = useApiHook({
+    key: "checkInVisitor",
+    url: `/ministry/${ministryslug}/checkin`,
+    method: "POST",
+    enabled: !!ministryslug,
+  }) as any;
+
   const {
     currentSignUpStep,
     goBackToPreviousSignUpStep,
@@ -63,7 +71,13 @@ const Visitor = () => {
         if (data?.ministry.donationLink) {
           setCurrentSignUpStep(2);
         } else {
-          setCurrentSignUpStep(3);
+          checkInVisitor(
+            { data: { visitors, familyName: visitors[0].familyName } },
+            {
+              onSuccess: setCurrentSignUpStep.bind(null, 4),
+              onError: (error: any) => {},
+            }
+          );
         }
       },
       previousButtonAction: setCurrentSignUpStep.bind(null, 0),
@@ -94,7 +108,12 @@ const Visitor = () => {
           message.info("Please add at least one visitor before checking in.");
           return;
         }
-        advanceToNextSignUpStep();
+        checkInVisitor(
+          { visitors, familyName: visitors[0].familyName },
+          {
+            onSuccess: setCurrentSignUpStep.bind(null, 4),
+          }
+        );
       },
       previousButtonAction: setCurrentSignUpStep.bind(null, 2),
     },
@@ -109,9 +128,6 @@ const Visitor = () => {
       buttonStyling: styles.button,
       nextButtonStyling: styles.success,
       hideNextButton: true,
-      nextButtonAction: () => {
-        window.close();
-      },
       previousButtonAction: !data?.ministry.donationLink
         ? setCurrentSignUpStep.bind(null, 3)
         : setCurrentSignUpStep.bind(null, 1),
