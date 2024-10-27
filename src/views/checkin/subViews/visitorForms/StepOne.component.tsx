@@ -10,7 +10,7 @@ const StepOne = () => {
       <Button className={`${styles.button} ${styles.new}`} onClick={() => setCurrentSignUpStep(1)} type="dashed">
         New Visitor
       </Button>
-      <Button className={`${styles.button} ${styles.returning}`} type="primary" onClick={() => setCurrentSignUpStep(2)}>
+      <Button className={`${styles.button} ${styles.returning}`} type="primary" onClick={() => setCurrentSignUpStep(5)}>
         Returning Visitor
       </Button>
     </div>

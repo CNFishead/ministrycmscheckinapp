@@ -9,6 +9,7 @@
   position: relative;
   .subContainer {
     display: flex;
+    justify-content: space-evenly;
     width: 100%;
   }
 }
@@ -107,5 +108,44 @@
     color: white !important;
     background-color: #dc3545 !important;
     border-color: #dc3545 !important;
+  }
+}
+
+.selected {
+  transition: all 0.5s ease-in-out;
+  background-color: #28a745;
+  color: white;
+
+  .memberItem {
+    position: relative; // For controlling the position of the pseudo-element if needed
+    transition: all 0.5s ease-in-out;
+
+    &::after {
+      content: "✓";
+      margin-left: 5px;
+      opacity: 0;
+      transform: translateX(-50px); // Optional for a slight slide-in effect
+      transition: all 0.5s ease-in-out;
+    }
+  }
+
+  // When selected, the checkmark fades in and/or slides in
+  &.selected .memberItem::after {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.memberItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  cursor: pointer;
+
+  .subContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 20px;
   }
 }

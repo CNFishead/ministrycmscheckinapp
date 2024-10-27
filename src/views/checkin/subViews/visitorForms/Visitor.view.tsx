@@ -12,6 +12,8 @@ import useApiHook from "@/state/useApi";
 import StepThree from "./StepThree.component";
 import StepFour from "./StepFour.component";
 import StepFinal from "./StepFinal.component";
+import ReturningVisitor from "./ReturningVisitor.component";
+import EditVisitorInfo from "./EditVisitorInfo.component";
 
 const Visitor = () => {
   // get the ministry id from the url
@@ -128,9 +130,51 @@ const Visitor = () => {
       buttonStyling: styles.button,
       nextButtonStyling: styles.success,
       hideNextButton: true,
-      previousButtonAction: !data?.ministry.donationLink
-        ? setCurrentSignUpStep.bind(null, 3)
-        : setCurrentSignUpStep.bind(null, 1),
+      hideBackButton: true,
+    },
+    5: {
+      id: 5,
+      title: "Returning Visitor",
+      headerText: "Welcome back!",
+      subHeaderText: "Search out your family name to check in!",
+      component: <ReturningVisitor />,
+      nextButtonDisabled: visitors.length === 0,
+      nextButtonAction: () => {
+        if (visitors.length === 0) {
+          message.info("Please add at least one visitor before checking in.");
+          return;
+        }
+        // set the check-in step to 6
+        setCurrentSignUpStep(6);
+      },
+      previousButtonAction: setCurrentSignUpStep.bind(null, 0),
+    },
+    6: {
+      id: 6,
+      title: "Edit Visitor Info",
+      headerText: "Would you like to update any information?",
+      subHeaderText: "Please select the visitor you would like to update. or select Check-In!",
+      component: <EditVisitorInfo />,
+      nextButtonAction: () => {
+        // check that the visitors array is not empty, if it is, we dont want to advance to the next step
+        if (visitors.length === 0) {
+          message.info("Please add at least one visitor before checking in.");
+          return;
+        }
+        // next check if the ministry has a field for donations, if it does, we want to advance to step 2, otherwise, we want to advance to step 3
+        if (data?.ministry.donationLink) {
+          setCurrentSignUpStep(2);
+        } else {
+          checkInVisitor(
+            { data: { visitors } },
+            {
+              onSuccess: setCurrentSignUpStep.bind(null, 4),
+              onError: (error: any) => {},
+            }
+          );
+        }
+      },
+      previousButtonAction: setCurrentSignUpStep.bind(null, 5),
     },
   };
 
