@@ -39,6 +39,7 @@ const Visitor = () => {
     advanceToNextSignUpStep,
     visitors,
     setCurrentSignUpStep,
+    selectedFamily,
   } = useInterfaceStore((state) => state);
   const steps: {
     [key: number]: SignUpStep;
@@ -74,7 +75,7 @@ const Visitor = () => {
           setCurrentSignUpStep(2);
         } else {
           checkInVisitor(
-            { data: { visitors, familyName: visitors[0].familyName } },
+            { data: { visitors, familyName: visitors[0]?.lastName } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},
@@ -111,7 +112,7 @@ const Visitor = () => {
           return;
         }
         checkInVisitor(
-          { visitors, familyName: visitors[0].familyName },
+          { data: { visitors, familyName: selectedFamily?.name ?? visitors[0].lastName } },
           {
             onSuccess: setCurrentSignUpStep.bind(null, 4),
           }
@@ -166,7 +167,7 @@ const Visitor = () => {
           setCurrentSignUpStep(2);
         } else {
           checkInVisitor(
-            { data: { visitors } },
+            { data: { visitors, familyName: selectedFamily?.name } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},

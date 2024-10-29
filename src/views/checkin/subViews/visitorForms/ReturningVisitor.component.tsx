@@ -6,12 +6,13 @@ import { Avatar, Button, Card, Input } from "antd";
 import { clear } from "console";
 import { useParams } from "next/navigation";
 import { FaCheck } from "react-icons/fa";
-import VisitorItem from "./VisitorItem.component";
+import VisitorItem from "../../components/visitorItem/VisitorItem.component";
 
 const { Search } = Input;
 const ReturningVisitor = () => {
-  const { setVisitors, visitors } = useInterfaceStore((state) => state);
-  const [selectedFamily, setSelectedFamily] = React.useState<any>(null);
+  const { setVisitors, visitors, selectedFamily, setSelectedFamily, setCurrentSignUpStep } = useInterfaceStore(
+    (state) => state
+  );
   const [search, setSearch] = React.useState<string>("");
   const [timer, setTimer] = React.useState<any>(null);
 
@@ -65,6 +66,14 @@ const ReturningVisitor = () => {
             variant="outlined"
             loading={familiesFetching}
           />
+          <p>
+            If you cannot find your family, or this is your first time here, please click{" "}
+            <a href="#" onClick={() => setCurrentSignUpStep(1)}
+                style={{ color: "blue", textDecoration: "underline" }}
+              >
+              here
+            </a>
+          </p>
           {families?.families?.map((family: any) => (
             <Card
               key={family._id}

@@ -22,7 +22,7 @@ const StepThree = () => {
         className={`${styles.button} ${styles.danger}`}
         onClick={() =>
           checkInVisitor(
-            { visitors },
+            { data: { visitors, familyName: visitors[0]?.lastName } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},

@@ -1,8 +1,7 @@
 import React from "react";
-import styles from "./Visitor.module.scss";
-import UserItem from "@/components/userItem/UserItem.component";
+import styles from "./Visitor.module.scss"; 
 import { useInterfaceStore } from "@/state/interface";
-import VisitorItem from "./VisitorItem.component";
+import VisitorItem from "../../components/visitorItem/VisitorItem.component";
 
 const StepFinal = () => {
   const { visitors } = useInterfaceStore((state) => state);
@@ -16,9 +15,9 @@ const StepFinal = () => {
         </p>
       </div>
       <div className={styles.container}>
-      <p>Visitors checked in: </p>
+        <p>Visitors checked in: </p>
         {visitors.map((visitor, index) => (
-          <div key={index} style={{width: '100%'}}>
+          <div key={index} style={{ width: "100%" }}>
             <VisitorItem member={visitor} />
           </div>
         ))}

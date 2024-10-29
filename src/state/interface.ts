@@ -9,8 +9,10 @@ type InterfaceState = {
   currentSignUpStep: number;
   signUpErrorDetected: boolean;
   isGoingToPreviousStep: boolean;
+  selectedFamily: any;
   visitors: MemberType[];
 
+  setSelectedFamily: (family: any) => void;
   setVisitors: (visitors: any[]) => void;
   setCurrentSignUpStep: (step: number) => void;
   advanceToNextSignUpStep: () => void;
@@ -24,8 +26,12 @@ export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => 
   signUpErrorDetected: false,
   currentForm: undefined,
   isGoingToPreviousStep: false,
+  selectedFamily: null,
   visitors: [] as MemberType[],
 
+  setSelectedFamily: (family: any) => {
+    set({ selectedFamily: family });
+  },
   setVisitors: (visitors: MemberType[]) => {
     set({ visitors });
   },

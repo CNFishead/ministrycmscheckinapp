@@ -32,7 +32,16 @@ const MemberForm = ({ ministry, form, memberData }: Props) => {
           </Form.Item>
         </div>
         <div className={formStyles.form__inputGroup}>
-          <Form.Item label="Last Name" name="lastName" rules={[]}>
+          <Form.Item
+            label="Last Name"
+            name="lastName"
+            rules={[
+              {
+                required: true,
+                message: "Please input your last name!",
+              },
+            ]}
+          >
             <Input className={styles.input} />
           </Form.Item>
         </div>

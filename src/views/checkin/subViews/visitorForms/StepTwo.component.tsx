@@ -45,32 +45,20 @@ const StepTwo = () => {
               // firstName: "John",
               // lastName: "Doe",
               // email: "test@test.com",
-              tags: ["gamer", "developer", "musician"],
+              // tags: ["gamer", "developer", "musician"],
               sex: "male",
               maritalStatus: "single",
               location: {
                 // address: "1234 Main St",
                 // city: "Nashville",
                 // zipCode: "37211",
-                // country: "United States",
+                country: "United States",
                 // state: "Tennessee",
               },
               role: "member",
               checkInLocation: "inPerson",
             }}
-          >
-            <div className={formStyles.form__formGroup}>
-              <div className={formStyles.form__inputGroup}>
-                <Form.Item
-                  label="Family Name"
-                  name="familyName"
-                  tooltip="This is the name of your family, this will be used to group all visitors and help with check-in next time you visit us. you only need to do this on the first visitor"
-                  rules={[visitors.length > 0 ? {} : { required: true, message: "Please input your email!" }]}
-                >
-                  <Input className={formStyles.input} />
-                </Form.Item>
-              </div>
-            </div>
+          > 
             <MemberForm form={form} ministry={data?.ministry} />
 
             {/* save button that will save the information */}
