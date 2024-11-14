@@ -4,7 +4,7 @@ import { SignUpStep } from "@/types/signUpSteps";
 import { useInterfaceStore } from "@/state/interface";
 import MainWrapper from "@/layouts/mainWrapper/MainWrapper.layout";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button, FloatButton, message, Steps } from "antd";
+import { Button, message } from "antd";
 import StepOne from "./StepOne.component";
 import StepTwo from "./StepTwo.component";
 import { useParams } from "next/navigation";
@@ -35,8 +35,7 @@ const Visitor = () => {
   const {
     currentSignUpStep,
     goBackToPreviousSignUpStep,
-    isGoingToPreviousStep,
-    advanceToNextSignUpStep,
+    isGoingToPreviousStep, 
     visitors,
     setCurrentSignUpStep,
     selectedFamily,

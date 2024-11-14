@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import errorHandler from "@/utils/errorHandler";
 import decryptData from "@/utils/decryptData";
 import { useSearchStore as store } from "@/state/search/search";
+// import { use } from "react";
+// import { useInterfaceStore } from "./interface";
+// uuid for generating unique ids
+// import { v4 as uuidv4 } from "uuid";
 
 const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE", data?: any, options?: any) => {
   let response;
@@ -53,7 +57,7 @@ const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE",
 // Reusable Hook
 const useApiHook = (options: {
   method: "GET" | "POST" | "PUT" | "DELETE";
-  url: string;
+  url?: string;
   key: string | string[];
   filter?: any;
   keyword?: string;
@@ -68,7 +72,9 @@ const useApiHook = (options: {
   onErrorCallback?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
+  // const { addError } = useInterfaceStore((state) => state);
   const router = useRouter();
+
   const {
     method,
     url,
@@ -88,31 +94,30 @@ const useApiHook = (options: {
 
   const queryKey = typeof key === "string" ? [key] : key;
 
-  // For GET requests, use useQuery
-  if (method === "GET") {
-    return useQuery({
-      queryKey,
-      queryFn: () =>
-        fetchData(url, method, undefined, {
-          defaultKeyword: keyword,
-          defaultFilter: filter,
-          defaultSort: sort,
-          defaultInclude: include,
-        }),
-      enabled,
-      refetchOnWindowFocus,
-      retry: 1,
-      meta: {
-        errorMessage: "An error occurred while fetching data",
-      },
-    });
-  }
+  const query = useQuery({
+    queryKey,
+    queryFn: () =>
+      fetchData(url!, "GET", undefined, {
+        defaultKeyword: keyword,
+        defaultFilter: filter,
+        defaultSort: sort,
+        defaultInclude: include,
+      }),
+    enabled: enabled && method === "GET",
+    refetchOnWindowFocus,
+    retry: 1,
+    meta: {
+      errorMessage: "An error occurred while fetching data",
+    },
+  });
 
-  // For POST, PUT, DELETE requests, use useMutation
-  return useMutation({
-    mutationFn: (data: any) => fetchData(url, method, data),
+  const mutation = useMutation({
+    mutationFn: (data: { url?: string; formData?: any }) =>
+      fetchData(url ? url : (data.url as any), method, data.formData),
     onSuccess: (data: any) => {
       if (successMessage) {
+        // addError({ id: uuidv4(), message: successMessage, type: 'success' });
+
         message.success(successMessage);
       }
 
@@ -130,11 +135,15 @@ const useApiHook = (options: {
     },
     onError: (error: any) => {
       errorHandler(error);
+      // addError({ id: uuidv4(), message: error.message, type: "error" });
       if (onErrorCallback) {
         onErrorCallback(error);
       }
     },
   });
+
+  // Return based on method
+  return method === "GET" ? query : mutation;
 };
 
 export default useApiHook;

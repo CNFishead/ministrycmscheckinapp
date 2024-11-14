@@ -4,16 +4,16 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  cursor: pointer; 
+  cursor: pointer;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
   background-color: white;
-  margin: 10px 0;  
+  margin: 10px 0;
 
   @include mobile {
-    flex-direction: column; 
+    flex-direction: column;
   }
   .subContainer {
     display: flex;
@@ -44,5 +44,32 @@
     transition: all 0.5s ease-in-out;
     background-color: #28a745;
     color: white;
+
+    .actionContainer {
+      .success {
+        background-color: white;
+        color: red;
+
+        &:hover {
+          background-color: #f8d7da;
+        }
+      }
+      .removeButton {
+        display: none;
+      }
+    }
+  }
+  .actionContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex: 0.2;
+    .success {
+      background-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
   }
 }

@@ -134,7 +134,7 @@ const EditVisitorInfo = () => {
                   isAvatar={true}
                   aspectRatio={1 / 1}
                   form={form}
-                  action={`${process.env.API_URL}/upload`}
+                  action={`${process.env.API_URL}/upload/cloudinary`}
                   default={chosenVisitor?.profileImageUrl}
                   placeholder="Upload a photo of yourself!"
                   bodyData={{

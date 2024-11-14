@@ -83,7 +83,7 @@ const PhotoUpload = (props: Props) => {
             showUploadList={false}
             type={"drag"}
             onChange={handleChange}
-            action={props.action ? props.action : "https://api.shepherdcms.com/api/v1/upload"}
+            action={props.action ? props.action : "https://api.shepherdcms.com/api/v1/upload/cloudinary"}
             headers={{
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             }}

@@ -2,10 +2,8 @@ import React from "react";
 import styles from "./Visitor.module.scss";
 import { useInterfaceStore } from "@/state/interface";
 import useApiHook from "@/state/useApi";
-import { Avatar, Button, Card, Input } from "antd";
-import { clear } from "console";
-import { useParams } from "next/navigation";
-import { FaCheck } from "react-icons/fa";
+import { Avatar, Button, Card, Input, Modal } from "antd"; 
+import { useParams } from "next/navigation"; 
 import VisitorItem from "../../components/visitorItem/VisitorItem.component";
 
 const { Search } = Input;
@@ -32,6 +30,11 @@ const ReturningVisitor = () => {
     // enabled: !!search,
     filter: `user;${data?.ministry?.user}`,
     keyword: `${search}`,
+  }) as any;
+  const { mutate: removeMember } = useApiHook({
+    key: "removeMember",
+    method: "PUT",
+    successMessage: "Member removed successfully",
   }) as any;
 
   const handleSearch = (value: string) => {
@@ -68,9 +71,7 @@ const ReturningVisitor = () => {
           />
           <p>
             If you cannot find your family, or this is your first time here, please click{" "}
-            <a href="#" onClick={() => setCurrentSignUpStep(1)}
-                style={{ color: "blue", textDecoration: "underline" }}
-              >
+            <a href="#" onClick={() => setCurrentSignUpStep(1)} style={{ color: "blue", textDecoration: "underline" }}>
               here
             </a>
           </p>
@@ -134,6 +135,20 @@ const ReturningVisitor = () => {
                 }
               }}
               checked={visitors.some((visitor) => visitor._id === member._id)}
+              handleRemove={() => {
+                Modal.confirm({
+                  title: "Are you sure you want to remove this member? This action cannot be undone.",
+                  onOk: async () => {
+                    await removeMember({
+                      url: `/family/${selectedFamily._id}/removeMember/${member._id}`,
+                    });
+                    setSelectedFamily({
+                      ...selectedFamily,
+                      members: selectedFamily.members.filter((m: any) => m._id !== member._id),
+                    });
+                  },
+                });
+              }}
             />
           ))}
         </div>
