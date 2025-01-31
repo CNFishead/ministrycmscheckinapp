@@ -20,7 +20,7 @@ export default function CheckInLayout({
     method: "GET",
     enabled: !!ministryslug,
   });
-
+  console.log(`API URL: ${process.env.NEXT_PUBLIC_API_URL}`);
   if (status === "pending") {
     return (
       <div className={styles.container}>
