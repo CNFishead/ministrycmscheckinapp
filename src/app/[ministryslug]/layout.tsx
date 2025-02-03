@@ -39,7 +39,7 @@ export default function CheckInLayout({
     <div className={styles.container}>
       <div className={styles.subContainer}>
         <div className={styles.imageContainer}>
-          <Image src={data?.ministry.ministryImageUrl} alt={`${data?.ministry?.name}-logo`} width={200} height={200} />
+          <Image src={data?.ministry.ministryImageUrl} alt={`${data?.ministry?.name}-logo`} width={300} height={100} />
         </div>
         <h1>{data?.ministry.name}</h1>
       </div>

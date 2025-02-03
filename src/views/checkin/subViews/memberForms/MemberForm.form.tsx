@@ -6,6 +6,8 @@ import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
 import moment from "moment";
 import { states } from "@/data/states";
 import { countries } from "@/data/countries";
+import useApiHook from "@/state/useApi";
+import { useParams } from "next/navigation";
 
 interface Props {
   ministry: any;
@@ -14,8 +16,40 @@ interface Props {
 }
 
 const MemberForm = ({ ministry, form, memberData }: Props) => {
+  const { ministryslug } = useParams();
+  const { data } = useApiHook({
+    key: "ministry",
+    url: `/ministry/${ministryslug}`,
+    method: "GET",
+    enabled: !!ministryslug,
+  });
+
   return (
     <div className={styles.leftContainer}>
+      <div className={styles.imageUploadContainer}>
+        <div className={styles.imageContainer}>
+          <PhotoUpload
+            name="profileImageUrl"
+            listType="picture-card"
+            tooltip="Upload a photo of yourself! this is completely optional but it helps church staff identify you in our system!"
+            isAvatar={true}
+            aspectRatio={1 / 1}
+            form={form}
+            action={`${process.env.NEXT_PUBLIC_API_URL}/upload/cloudinary`}
+            placeholder="Upload a photo of yourself!"
+            bodyData={{
+              username: data?.user?.username,
+              folder: "members",
+              ministryName: data?.ministry.name,
+            }}
+          />
+        </div>
+        <div className={formStyles.form__inputGroup}>
+          <Form.Item name="profileImageUrl" label="">
+            <Input type="text" placeholder="Or link to an image here!" className={styles.input} />
+          </Form.Item>
+        </div>
+      </div>
       <div className={formStyles.form__formGroup}>
         <div className={formStyles.form__inputGroup}>
           <Form.Item

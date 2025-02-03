@@ -2,8 +2,8 @@ import React from "react";
 import styles from "./Visitor.module.scss";
 import { useInterfaceStore } from "@/state/interface";
 import useApiHook from "@/state/useApi";
-import { Avatar, Button, Card, Input, Modal } from "antd"; 
-import { useParams } from "next/navigation"; 
+import { Avatar, Button, Card, Input, Modal } from "antd";
+import { useParams } from "next/navigation";
 import VisitorItem from "../../components/visitorItem/VisitorItem.component";
 
 const { Search } = Input;
@@ -28,7 +28,7 @@ const ReturningVisitor = () => {
     url: `/family`,
     method: "GET",
     // enabled: !!search,
-    filter: `user;${data?.ministry?.user}`,
+    filter: `user;${data?.ministry?.user?._id}`,
     keyword: `${search}`,
   }) as any;
   const { mutate: removeMember } = useApiHook({
@@ -75,7 +75,7 @@ const ReturningVisitor = () => {
               here
             </a>
           </p>
-          {families?.families?.map((family: any) => (
+          {families?.data?.map((family: any) => (
             <Card
               key={family._id}
               onClick={() => {

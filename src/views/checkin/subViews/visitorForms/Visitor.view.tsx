@@ -35,7 +35,7 @@ const Visitor = () => {
   const {
     currentSignUpStep,
     goBackToPreviousSignUpStep,
-    isGoingToPreviousStep, 
+    isGoingToPreviousStep,
     visitors,
     setCurrentSignUpStep,
     selectedFamily,
@@ -73,8 +73,9 @@ const Visitor = () => {
         if (data?.ministry.donationLink) {
           setCurrentSignUpStep(2);
         } else {
+          console.log(visitors);
           checkInVisitor(
-            { data: { visitors, familyName: visitors[0]?.lastName } },
+            { formData: { visitors: visitors, familyName: visitors[0]?.lastName } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},
@@ -166,7 +167,7 @@ const Visitor = () => {
           setCurrentSignUpStep(2);
         } else {
           checkInVisitor(
-            { data: { visitors, familyName: selectedFamily?.name } },
+            { formData: { visitors, familyName: selectedFamily?.name } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},

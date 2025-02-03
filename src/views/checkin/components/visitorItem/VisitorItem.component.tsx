@@ -51,9 +51,11 @@ const VisitorItem = ({ member, checked, onClick, handleRemove }: VisitorItemProp
         )}
         {/* action container */}
         <div className={styles.actionContainer}>
-          <Button type="primary" onClick={onClick} className={styles.success}>
-            {checked ? "Remove" : "Select"}
-          </Button>
+          {onClick && (
+            <Button type="primary" onClick={onClick} className={styles.success}>
+              {checked ? "Remove" : "Select"}
+            </Button>
+          )}
           {handleRemove && (
             <>
               {/* delete button */}
