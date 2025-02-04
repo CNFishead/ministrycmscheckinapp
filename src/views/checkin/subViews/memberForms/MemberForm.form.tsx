@@ -86,7 +86,7 @@ const MemberForm = ({ ministry, form, memberData }: Props) => {
             rules={[]}
             tooltip="email isnt required but we would appreciate it if you provide it, we promise not to spam you"
           >
-            <Input type="tel" className={styles.input} />
+            <Input type="email" className={styles.input} />
           </Form.Item>
         </div>
       </div>
