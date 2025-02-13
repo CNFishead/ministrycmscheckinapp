@@ -112,7 +112,7 @@ const Visitor = () => {
           return;
         }
         checkInVisitor(
-          { data: { visitors, familyName: selectedFamily?.name ?? visitors[0].lastName } },
+          { formData: { visitors, familyName: selectedFamily?.name ?? visitors[0].lastName } },
           {
             onSuccess: setCurrentSignUpStep.bind(null, 4),
           }
