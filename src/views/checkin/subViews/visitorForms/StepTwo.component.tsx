@@ -1,21 +1,15 @@
 import React from "react";
 import styles from "./Visitor.module.scss";
 import formStyles from "@/styles/Form.module.scss";
-import { Form, Input, Select, Tooltip, Divider, Button, DatePicker, Drawer } from "antd";
-import { states } from "@/data/states";
-import { countries } from "@/data/countries";
+import { Form, Button} from "antd";
 import MemberType from "@/types/MemberType";
-import UserItem from "@/components/userItem/UserItem.component";
-import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
 import { useParams } from "next/navigation";
 import useApiHook from "@/state/useApi";
 import { useInterfaceStore } from "@/state/interface";
-import moment from "moment";
 import MemberForm from "../memberForms/MemberForm.form";
 
 const StepTwo = () => {
   const [form] = Form.useForm();
-  const [showDrawer, setShowDrawer] = React.useState(false);
   // get the ministry id from the url
   const { ministryslug } = useParams();
   const { data } = useApiHook({

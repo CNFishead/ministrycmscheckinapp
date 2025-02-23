@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import useApiHook from "@/state/useApi";
 
 const StepThree = () => {
-  const { setCurrentSignUpStep, visitors } = useInterfaceStore((state) => state);
+  const { setCurrentSignUpStep, visitors, formValues, selectedFamily } = useInterfaceStore((state) => state);
 
   const { ministryslug } = useParams();
 
@@ -22,7 +22,7 @@ const StepThree = () => {
         className={`${styles.button} ${styles.danger}`}
         onClick={() =>
           checkInVisitor(
-            { formData: { visitors, familyName: visitors[0]?.lastName } },
+            { formData: { visitors, familyName: selectedFamily?.name ?? visitors[0].lastName, ...formValues } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},

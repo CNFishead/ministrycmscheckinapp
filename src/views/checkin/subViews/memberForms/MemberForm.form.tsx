@@ -230,17 +230,6 @@ const MemberForm = ({ ministry, form, memberData }: Props) => {
             />
           </Form.Item>
         </div>
-        <div className={formStyles.form__inputGroup}>
-          <Form.Item name="checkInLocation" label="How are you joining us today?">
-            <Select
-              className={styles.input}
-              options={[
-                { value: "online", label: "Online" },
-                { value: "inPerson", label: "In Person" },
-              ]}
-            />
-          </Form.Item>
-        </div>
       </div>
     </div>
   );

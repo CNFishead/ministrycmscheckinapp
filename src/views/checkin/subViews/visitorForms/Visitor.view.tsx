@@ -39,6 +39,7 @@ const Visitor = () => {
     visitors,
     setCurrentSignUpStep,
     selectedFamily,
+    formValues,
   } = useInterfaceStore((state) => state);
   const steps: {
     [key: number]: SignUpStep;
@@ -69,19 +70,7 @@ const Visitor = () => {
           message.info("Please add at least one visitor before checking in.");
           return;
         }
-        // next check if the ministry has a field for donations, if it does, we want to advance to step 2, otherwise, we want to advance to step 3
-        if (data?.ministry.donationLink) {
-          setCurrentSignUpStep(2);
-        } else {
-          console.log(visitors);
-          checkInVisitor(
-            { formData: { visitors: visitors, familyName: visitors[0]?.lastName } },
-            {
-              onSuccess: setCurrentSignUpStep.bind(null, 4),
-              onError: (error: any) => {},
-            }
-          );
-        }
+        setCurrentSignUpStep(6);
       },
       previousButtonAction: setCurrentSignUpStep.bind(null, 0),
     },
@@ -112,7 +101,7 @@ const Visitor = () => {
           return;
         }
         checkInVisitor(
-          { formData: { visitors, familyName: selectedFamily?.name ?? visitors[0].lastName } },
+          { formData: { visitors, familyName: selectedFamily?.name ?? visitors[0].lastName, ...formValues } },
           {
             onSuccess: setCurrentSignUpStep.bind(null, 4),
           }
@@ -167,7 +156,7 @@ const Visitor = () => {
           setCurrentSignUpStep(2);
         } else {
           checkInVisitor(
-            { formData: { visitors, familyName: selectedFamily?.name } },
+            { formData: { visitors, familyName: selectedFamily?.name, ...formValues } },
             {
               onSuccess: setCurrentSignUpStep.bind(null, 4),
               onError: (error: any) => {},

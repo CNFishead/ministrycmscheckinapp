@@ -6,6 +6,7 @@ import Error from "@/components/error/Error.component";
 import Loader from "@/components/loader/Loader.component";
 import { Divider } from "antd";
 import Image from "next/image";
+import { Metadata } from "next";
 
 export default function CheckInLayout({
   children,
@@ -20,7 +21,6 @@ export default function CheckInLayout({
     method: "GET",
     enabled: !!ministryslug,
   });
-  console.log(`API URL: ${process.env.NEXT_PUBLIC_API_URL}`);
   if (status === "pending") {
     return (
       <div className={styles.container}>
@@ -35,6 +35,7 @@ export default function CheckInLayout({
       </div>
     );
   }
+
   return (
     <div className={styles.container}>
       <div className={styles.subContainer}>

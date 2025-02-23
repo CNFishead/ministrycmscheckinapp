@@ -3,17 +3,15 @@ import styles from "./Visitor.module.scss";
 import formStyles from "@/styles/Form.module.scss";
 import { useInterfaceStore } from "@/state/interface";
 import VisitorItem from "../../components/visitorItem/VisitorItem.component";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import MemberForm from "../memberForms/MemberForm.form";
 import { useParams } from "next/navigation";
 import useApiHook from "@/state/useApi";
 import dayjs from "dayjs";
-import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
-
 const EditVisitorInfo = () => {
   const { ministryslug } = useParams();
   const [chosenVisitor, setChosenVisitor] = React.useState<any>(null);
-  const { visitors, setVisitors, selectedFamily } = useInterfaceStore((state) => state);
+  const { visitors, setVisitors, selectedFamily, formValues, setFormValues } = useInterfaceStore((state) => state);
   const [form] = Form.useForm();
   const { data } = useApiHook({
     key: "ministry",
@@ -55,7 +53,7 @@ const EditVisitorInfo = () => {
     // set the chosen visitor to null
     setChosenVisitor(null);
   };
-
+  console.log(chosenVisitor);
   React.useEffect(() => {
     // if the chosen visitor is not null, set the form values to the chosen visitor
     if (chosenVisitor) {
@@ -116,55 +114,49 @@ const EditVisitorInfo = () => {
                   onClick={() => {
                     setChosenVisitor(visitor);
                   }}
+                  sm={true}
                 />
               ))}
             </div>
           </div>
         ) : (
           <>
-            <Form.Item name="_id" hidden>
-              <input /> {/* hidden input */}
-            </Form.Item>
-            <div className={styles.imageUploadContainer}>
-              <div className={styles.imageContainer}>
-                <PhotoUpload
-                  name="profileImageUrl"
-                  listType="picture-card"
-                  tooltip="Upload a photo of yourself! this is completely optional but it helps church staff identify you in our system!"
-                  isAvatar={true}
-                  aspectRatio={1 / 1}
-                  form={form}
-                  action={`${process.env.API_URL}/upload/cloudinary`}
-                  default={chosenVisitor?.profileImageUrl}
-                  placeholder="Upload a photo of yourself!"
-                  bodyData={{
-                    ministryName: data?.ministry.name,
-                  }}
-                />
-              </div>
-              <div className={formStyles.form__inputGroup}>
-                <Form.Item name="profileImageUrl" label="">
-                  <Input type="text" placeholder="Member Image http address" className={styles.input} />
-                </Form.Item>
-              </div>
-            </div>
+            {chosenVisitor?._id && (
+              <Form.Item name="_id" hidden>
+                <input /> {/* hidden input */}
+              </Form.Item>
+            )}
             <MemberForm form={form} ministry={data?.ministry} />
             {/* save button that will save the information */}
             <div style={{ display: "flex", justifyContent: "space-evenly" }}>
               <Button
                 className={`${styles.button} ${styles.danger}`}
                 type="default"
-                onClick={() => setChosenVisitor(null)}
+                onClick={() => {
+                  setChosenVisitor(undefined);
+                  form.resetFields();
+                }}
               >
                 Go Back
               </Button>
               <Button type="primary" onClick={() => handleUpdate()} className={`${styles.button} ${styles.success}`}>
-                {!chosenVisitor?._id ? "Add Member" : "Update Visitor Information"}
+                {Object.keys(chosenVisitor).length === 0 ? "Add Member" : "Update Visitor Information"}
               </Button>
             </div>
           </>
         )}
       </Form>
+      {/* check in location handler, asks the user how they are checking in today */}
+      <Select
+        placeholder="How are you checking in today?"
+        onChange={(value) => setFormValues({ ...formValues, checkInLocation: value })}
+        style={{ width: "100%", margin: "5% 0" }}
+        defaultValue={`in-person`}
+      >
+        <Select.Option value="in-person">In Person</Select.Option>
+        <Select.Option value="online">Online</Select.Option>
+        <Select.Option value="event">Event Check In</Select.Option>
+      </Select>
     </div>
   );
 };

@@ -2,15 +2,14 @@ import React from "react";
 import styles from "./Visitor.module.scss";
 import { useInterfaceStore } from "@/state/interface";
 import useApiHook from "@/state/useApi";
-import { Avatar, Button, Card, Input, Modal } from "antd";
+import { Avatar, Button, Card, Input, Modal, Select } from "antd";
 import { useParams } from "next/navigation";
 import VisitorItem from "../../components/visitorItem/VisitorItem.component";
 
 const { Search } = Input;
 const ReturningVisitor = () => {
-  const { setVisitors, visitors, selectedFamily, setSelectedFamily, setCurrentSignUpStep } = useInterfaceStore(
-    (state) => state
-  );
+  const { setVisitors, visitors, selectedFamily, setSelectedFamily, setCurrentSignUpStep, setFormValues, formValues } =
+    useInterfaceStore((state) => state);
   const [search, setSearch] = React.useState<string>("");
   const [timer, setTimer] = React.useState<any>(null);
 
@@ -75,7 +74,7 @@ const ReturningVisitor = () => {
               here
             </a>
           </p>
-          {families?.data?.map((family: any) => (
+          {families?.payload?.map((family: any) => (
             <Card
               key={family._id}
               onClick={() => {
@@ -151,6 +150,18 @@ const ReturningVisitor = () => {
               }}
             />
           ))}
+
+          {/* check in location handler, asks the user how they are checking in today */}
+          <Select
+            placeholder="How are you checking in today?"
+            onChange={(value) => setFormValues({ ...formValues, checkInLocation: value })}
+            style={{ width: "100%", margin: "5% 0" }}
+            defaultValue={`in-person`}
+          >
+            <Select.Option value="in-person">In Person</Select.Option>
+            <Select.Option value="online">Online</Select.Option>
+            <Select.Option value="event">Event Check In</Select.Option>
+          </Select>
         </div>
       ) : null}
     </div>

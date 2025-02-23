@@ -11,7 +11,9 @@ type InterfaceState = {
   isGoingToPreviousStep: boolean;
   selectedFamily: any;
   visitors: MemberType[];
+  formValues: any;
 
+  setFormValues: (values: any) => void;
   setSelectedFamily: (family: any) => void;
   setVisitors: (visitors: any[]) => void;
   setCurrentSignUpStep: (step: number) => void;
@@ -28,7 +30,13 @@ export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => 
   isGoingToPreviousStep: false,
   selectedFamily: null,
   visitors: [] as MemberType[],
+  formValues: {
+    checkInLocation: "in-person", // default value
+  }, // simple object to store random form values between steps
 
+  setFormValues: (values: any) => {
+    set({ formValues: values });
+  },
   setSelectedFamily: (family: any) => {
     set({ selectedFamily: family });
   },

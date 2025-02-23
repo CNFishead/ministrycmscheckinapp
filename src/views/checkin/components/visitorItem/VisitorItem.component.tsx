@@ -10,8 +10,9 @@ interface VisitorItemProps {
   checked?: boolean;
   onClick?: () => void;
   handleRemove?: () => void;
+  sm?: boolean;
 }
-const VisitorItem = ({ member, checked, onClick, handleRemove }: VisitorItemProps) => {
+const VisitorItem = ({ member, checked, onClick, handleRemove, sm = false }: VisitorItemProps) => {
   return (
     <div
       key={member._id}
@@ -24,20 +25,20 @@ const VisitorItem = ({ member, checked, onClick, handleRemove }: VisitorItemProp
       <div className={styles.subContainer}>
         <Avatar src={member.profileImageUrl} alt={member.fullName} size={"large"} />
         <div className={styles.infoContainer}>
-          <strong>Name:</strong> <span>{`${member.firstName} ${member.lastName}`}</span>
+          <strong>Name:</strong> <span>{`${member.fullName ? member.fullName : `${member.firstName} ${member.lastName}`}`}</span>
         </div>
 
-        {member?.email && (
+        {member?.email && sm && (
           <div className={styles.infoContainer}>
             <strong>Email Address:</strong> <span>{member?.email}</span>
           </div>
         )}
-        {member?.birthday && (
+        {member?.birthday && sm && (
           <div className={styles.infoContainer}>
             <strong>Birthday:</strong> <span>{new Date(member?.birthday).toLocaleDateString()}</span>
           </div>
         )}
-        {member?.phoneNumber && (
+        {member?.phoneNumber && sm && (
           <div className={styles.infoContainer}>
             <strong>Phone: </strong>
             <span>{formatPhoneNumber(member?.phoneNumber)}</span>
